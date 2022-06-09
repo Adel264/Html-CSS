@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <script>
+function Action() {
+  var MM = new XMLHttpRequest();
+  MM.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      document.getElementById("Change").innerHTML =
+      this.responseText;
+    }
+  };
+  MM.open("GET", "Learn.txt", true);
+  MM.send();
+}
+</script>
+</head>
+<body>
+  <div class="banner">
+
+    <div class="liste">
+                   <img src="log.png" class="log"> 
+         <ul><b>
+      <li> <a href="#">Menu</a></li>
+      <li><a href="#">Gallery</a></li>
+      <li><a href="#">Contacts</a></li>
+      <li><a href="#">About</a></li>
+      <li><a href="#">Home</a></li>
+    </b></ul>
+  </div>
+    <div class="content">
+   <h1>French Restaurant</h1> 
+<p class="text"> We’re the best restaurant in town</p>
+ 
+<div id="Change">
+     <button onclick="Action()"><span></span> Learn More</button>
+  <button type="button"><span></span><a href="Booking_Page.html">Book A Visit</a> </button>
+
+</div>
+</div>
+
+</body>
+</html>
