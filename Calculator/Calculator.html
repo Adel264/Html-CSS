@@ -1,0 +1,165 @@
+<html>
+<head>
+  <title></title>
+  <link rel="stylesheet" type="text/css" href="style.css">
+
+</head>
+<body>
+<div class="calculater">
+  <div class="calculater-title">
+    <span class="calculater-title-span">
+      Calculater
+    </span>
+    <div class="calculater-title-hr"></div>
+  </div>
+  <div class="calculater-display">
+    <div class="calculater-display-span secondary-display" id="secondary-display">
+    </div>
+    <div class="calculater-display-span primary-display" id="display">
+    </div>
+ 
+  </div>
+  <div class="calculater-display-hr"></div>
+
+  <div class="calculater-btn" id="btn">
+    <button class="calculater-Button" id="7">7</button>
+    <button class="calculater-Button" id="8">8</button>
+    <button class="calculater-Button" id="9">9</button>
+    <button class="calculater-Button btn-bg" id="/">/</button>
+    <button class="calculater-Button" id="4">4</button>
+    <button class="calculater-Button" id="5">5</button>
+
+    <button class="calculater-Button" id="6">6</button>
+    <button class="calculater-Button btn-bg" id="*">*</button>
+    <button class="calculater-Button" id="1">1</button>
+    <button class="calculater-Button" id="2">2</button>
+    <button class="calculater-Button" id="3">3</button>
+    <button class="calculater-Button btn-bg" id="+">+</button>
+    <button class="calculater-Button btn-bg" id=".">.</button>
+    <button class="calculater-Button" id="0">0</button>
+      
+    <button class="calculater-Button btn-bg-equal" id="=">=</button>
+    <button class="calculater-Button btn-bg" id="-">-</button>
+    <button class="calculater-Button-clear" id="C">C</button>
+  </div>
+
+</div>
+<script type="text/javascript">console.clear();
+const btns = document.getElementById("btn");
+const primaryDisplay = document.getElementById("display");
+const second = document.getElementById("secondary-display");
+let now = '';
+let upcoming = '';
+let evalResult;
+let lastOperator = false;
+const primaryRender = (value) => {
+  primaryDisplay.innerText = value;
+}
+
+const secondaryRender = (value) => {
+  second.innerText = value;
+}
+secondaryRender('0');
+primaryRender('0');
+
+const evaluate = (e) => {
+  let width = second.scrollWidth;
+  if(width > 310){
+    second.style.overflowX = 'scroll';
+    second.scrollLeft = width;
+  }
+
+  else{
+    second.style.overflowX = 'hidden';
+  }
+  
+  let value = e.target.innerText;
+  if (value >= '0' && value <= '9') {
+    let len = now.length;
+    let lastOp = isOp(now[len - 1]);
+    if (lastOperator) {
+      now = now.concat(value);
+      upcoming = "".concat(value);
+      secondaryRender(now);
+      primaryRender(upcoming);
+      lastOperator = false;
+
+    } else {
+      now = now.concat(value);
+      upcoming = upcoming.concat(value);
+      secondaryRender(now);
+      primaryRender(upcoming);
+    }
+
+  } else if (isOp(value)) {
+    if (now.length == 0 && (value == '/' || value == '*'));
+
+    else {
+      upcoming = "";
+      primaryRender(value);
+      lastOperator = true;
+      let len = now.length;
+      let lastOp = isOp(now[len - 1]);
+      if (lastOp) {
+        now = now.substr(0, len - 1) + value;
+        console.log(now);
+        secondaryRender(now);
+        decimal = false;
+      } else {
+        now = now.concat(value);
+        secondaryRender(now);
+      }
+    }
+
+  } else if (value == '.') {
+    if (upcoming.indexOf('.') < 0) {
+      if (upcoming.length == 0) {
+        now = now.concat('0.');
+        upcoming = upcoming.concat('0.');
+        secondaryRender(now);
+        primaryRender(upcoming);
+      }
+            else {
+        now = now.concat(value);
+        upcoming = upcoming.concat(value);
+        secondaryRender(now);
+        primaryRender(upcoming);
+      }
+    }
+  } else if (value == '=') {
+    second.style.overflowX = 'hidden';
+    
+    if (now.length == 0);
+    else {
+      let result = eval(now);
+      upcoming = '';
+      now = '';
+      secondaryRender('0');
+      primaryRender(result);
+    }
+
+      } else if (value == 'C') {
+    now = '';
+    upcoming = '';
+    secondaryRender('0');
+    primaryRender('0');
+  }
+    let width1 = primaryDisplay.scrollWidth;
+    if(width1 > 310){
+      primaryDisplay.style.overflowX = 'scroll';
+    }
+    else{
+      primaryDisplay.style.overflowX = 'hidden';
+    }
+}
+
+
+for (let elem of btns.children) {
+  elem.addEventListener('click', evaluate);
+}
+
+function isOp(value) {
+  return (/\+|\-|\*|\//).test(value);
+}</script>
+</body>
+</html>
